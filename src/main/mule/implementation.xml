@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:new-api="http://www.mulesoft.org/schema/mule/new-api"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/new-api http://www.mulesoft.org/schema/mule/new-api/current/mule-new-api.xsd">
+	<configuration doc:name="Configuration" doc:id="ac50cd3e-b5e1-474d-b7ad-8046777e5052" defaultErrorHandler-ref="GlobalError_Handler" />
+	<flow name="CreateOrder"
+		doc:id="1e2cbe5c-71fd-4c96-a63e-1d8ae3b7b87f">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="d69e7c8a-8307-4071-8e27-19e45f086690" message="#[payload]" />
+		<new-api:create-order doc:name="Create order"
+			doc:id="09c88e30-dc85-4eb2-8aab-72f6abfe1534"
+			config-ref="G13System_API_Config" client-id="${client.id}"
+			client-secret="${client.secret}" />
+
+	</flow>
+	<flow name="GetOrders"
+		doc:id="ceaa0a31-8959-46bd-b5b6-f7e87449a374">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="39fc99d2-4a23-48d6-b77a-232198675535" message="#[payload]" />
+		<new-api:get-orders doc:name="Get orders"
+			doc:id="a10b2540-86b3-4e2f-a06e-e07b31f3f14a"
+			config-ref="G13System_API_Config" client-id="${client.id}"
+			client-secret="${client.secret}"
+			userid="#[attributes.queryParams.userid]" />
+	</flow>
+	<flow name="UpdateOrders"
+		doc:id="04c5adf0-e033-4a63-8bc5-db9b09f1a1cd">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="0106c85e-770e-4df9-9cf8-2f84e1563bfe" message="#[payload]" />
+		<new-api:update-order-by-orderid
+			doc:name="Update order by orderid"
+			doc:id="530d01ee-a2d2-4ade-aa1a-136e7559512b"
+			config-ref="G13System_API_Config"
+			orderid="#[attributes.uriParams.orderid]" client-id="${client.id}"
+			client-secret="${client.secret}" />
+	</flow>
+	<flow name="CreateUser"
+		doc:id="a1d3f405-ad9b-44ec-a08f-c86713b5537f">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="e477ba8a-f0bc-4a41-87fa-5112f559a7c8" message="#[payload]" />
+		<new-api:create-user doc:name="Create user"
+			doc:id="3fe9f7fb-939c-4fce-9f46-e8b7294f4d3a"
+			config-ref="G13System_API_Config" client-id="${client.id}"
+			client-secret="${client.secret}" />
+	</flow>
+	<flow name="UpdateUser"
+		doc:id="f79db814-fa46-43dd-abb5-30f1b2eecd42">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="cccbd726-42ea-4a99-8a53-f9bd90128f9f" message="#[payload]" />
+		<new-api:update-users doc:name="Update users"
+			doc:id="5e5b6d0f-9a3f-44eb-be1f-0ed0e4c4fdb6"
+			config-ref="G13System_API_Config" client-id="${client.id}"
+			client-secret="${client.secret}" />
+	</flow>
+	<flow name="DeleteUser"
+		doc:id="d5a8d14d-efdb-4484-b6b5-4c2d7fcbe2c2">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="571c7ce4-c8ea-482c-99c0-e366cd989297" message="#[payload]" />
+		<new-api:delete-users doc:name="Delete users"
+			doc:id="3098f151-27bc-4557-aeb8-ff1885361ee3"
+			config-ref="G13System_API_Config"
+			userid="#[attributes.queryParams.userid]" client-id="${client.id}"
+			client-secret="${client.secret}" />
+	</flow>
+	<flow name="Payments"
+		doc:id="99df6a6b-f819-4ef5-a38c-f633280321ba">
+		<logger level="INFO" doc:name="Logger"
+			doc:id="21595319-fd45-49f5-8409-7a35dbdf58ea" message="#[payload]" />
+		<ee:transform doc:name="Transform Message"
+			doc:id="719c5bb7-eebe-4a3c-b41b-f0b02bebacce"
+			xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  message: "payment received"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

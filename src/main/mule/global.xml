@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<error-handler name="GlobalError_Handler">
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="50d85380-e0f3-44e9-80d7-717c418f6e18" type="NEW-API:CONNECTIVITY">
+			<ee:transform doc:name="Transform Message" doc:id="3bead4c5-32b0-490a-ad11-4c066e5ed462" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "Unable to connect to the API, Please try later!!" ++ error.description as String
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="2474c3ce-77f1-44d3-9ac2-aae0afa6b7f3" message="#[payload]"/>
+			
+</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="99b2bf7f-80db-4450-9ca7-3489806fa3d7" type="NEW-API:BAD_REQUEST">
+			<ee:transform doc:name="Transform Message" doc:id="b5de8fc6-cb6d-42e6-a418-999c990e3142" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "Invalid request, Please correct the input!" ++ error.description as String
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="751b8cbf-d48f-4efd-a99c-b96b8b0b62b8" message="#[payload]"/>
+			
+</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4804bf41-f02a-4f1f-8366-7947f37c0644" type="NEW-API:PARSING">
+			<ee:transform doc:name="Transform Message" doc:id="9b5f8fe3-4e9d-4165-a018-91a6e4f8ae3b" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "Parsing exception has occured, Please validate if the input is valid!" ++ error.description as String
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="7d4e9842-dd85-4316-a99f-666b22b02ac3" message="#[payload]"/>
+			
+</on-error-continue>
+		</error-handler>
+	
+	
+	
+	
+	</mule>
