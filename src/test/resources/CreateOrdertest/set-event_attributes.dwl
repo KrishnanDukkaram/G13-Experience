@@ -1,0 +1,30 @@
+{
+  "headers": {
+    "client_id": "f96a63d705d646cca4f8d7d0db98bcb0",
+    "client_secret": "944b7C4730684d3E8518b1dFe1D0b0A0",
+    "content-type": "application/json",
+    "user-agent": "PostmanRuntime/7.28.4",
+    "accept": "*/*",
+    "postman-token": "cf12bafc-7f3f-4cbe-9714-a65972d53dae",
+    "host": "localhost:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "83"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/api/G13experience/orders",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/orders",
+  "listenerPath": "/api/G13experience/*",
+  "relativePath": "/api/G13experience/orders",
+  "localAddress": "/127.0.0.1:8081",
+  "uriParams": {},
+  "rawRequestUri": "/api/G13experience/orders",
+  "rawRequestPath": "/api/G13experience/orders",
+  "remoteAddress": "/127.0.0.1:58038",
+  "requestPath": "/api/G13experience/orders"
+}
